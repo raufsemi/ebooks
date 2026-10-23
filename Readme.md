@@ -1,139 +1,102 @@
-Minimal EPUB Template
+# Minimal EPUB Template
 
-Write your book in Markdown and turn it into a clean, modern EPUB.
+Write your book in Markdown. Run one command to get an EPUB.
 
-A lightweight template with customizable styling, captioned images, and an optional imprint page.
+## Setup
 
-⸻
+You need Python 3. In the project folder, run:
 
-Getting Started
-
-1. Install Dependencies
-
-Install Python 3 if you haven’t already.
-
-Open your terminal in the project folder and run:
-
+```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python3 -m pip install -r requirements.txt
+```
 
-Windows
+On Windows, activate with `.venv\Scripts\activate` instead.
 
-Activate the virtual environment using:
+## Build
 
-.venv\Scripts\activate
-
-2. Write Your Book
-
-Edit the following files to customize your book:
-
-File	Description
-book.yaml	Book title, author, language, and publisher
-manuscript/book.md	Main book content
-manuscript/imprint.md	About this edition
-assets/cover.png	Book cover
-assets/logo.png	Optional publisher logo
-styles/ebook.css	EPUB styling
-
-Write your manuscript using Markdown.
-
-* ## starts a new chapter, with its own page and table-of-contents entry.
-* ### creates a section within a chapter.
-* # is ignored by the chapter parser, so you can use it as a title in your editor.
-
-3. Add Images
-
-Place your images in manuscript/images/.
-
-Reference them in manuscript/book.md using Markdown:
-
-![Image caption](images/photo.png)
-
-You can customize the appearance of individual images using classes:
-
-![A photograph](images/photo.png){.medium .frame}
-
-Image Classes
-
-Class	Description
-.large	Full width (default)
-.medium	80% width
-.small	60% width
-.tiny	35% width
-.portrait	55% width, ideal for screenshots
-.frame	Adds a thin border
-.crop	Crops to a fixed height
-.left	Floats the image to the left
-.right	Floats the image to the right
-.cover	Edge-to-edge image without rounded corners
-.icon	Small, rounded image
-
-Image guidelines
-
-* Place each image on its own line, with a blank line before and after it.
-* The alt text becomes the image caption.
-* Images are automatically resized to a maximum width of 1600 pixels and optimized during the build.
-* For consistent results, use the same aspect ratio for similar images, such as 16:9.
-
-4. Build Your EPUB
-
-Generate your book by running:
-
+```bash
 python3 build.py
+```
 
-Your finished EPUB will appear in the output/ directory.
+Your EPUB appears in `output/`. Run it again after every change.
 
-Tip: Run the build command again whenever you update your manuscript, cover, images, or styling.
+## What to edit
 
-5. Customize the Imprint
+| File | What it is |
+|---|---|
+| `book.yaml` | Title, author, language, publisher |
+| `manuscript/book.md` | Your book |
+| `manuscript/imprint.md` | The "About this edition" page |
+| `assets/cover.png` | Cover |
+| `assets/logo.png` | Logo (optional) |
+| `styles/ebook.css` | Look of the book |
 
-Edit manuscript/imprint.md to customize the information about your edition.
+`manuscript/book.md` is also a short tutorial. Read it, then replace it with your own text.
 
-The following placeholders are automatically populated using values from book.yaml:
+## Writing
 
-* {{ publisher }}
-* {{ editor }}
-* {{ imprint_note }}
+- `##` starts a chapter. Each chapter gets its own page and a table of contents entry.
+- `###` starts a section inside a chapter.
+- `#` is ignored. Use it for the book title.
+- `\pagebreak` on its own line starts a new page.
+- Footnotes: write `[^1]` in your text and `[^1]: Your note.` anywhere in the same chapter.
 
-Lines whose placeholders are all empty are automatically removed.
+## Images
 
-⸻
+Put pictures in `images/`, then add this to `book.md`:
 
-Project Structure
+```markdown
+![Caption](images/photo.png)
+![Caption](images/photo.png){.medium .frame}
+```
 
+Rules:
+
+- Put the image on its own line, with an empty line above and below.
+- The text in the brackets is the caption.
+- Images wider than 1600 px are shrunk automatically.
+- Use the same shape for similar pictures (for example 16:9) so they look even.
+
+Add these words in `{ }` after the image:
+
+| Word | Effect |
+|---|---|
+| `.large` | Full width (default) |
+| `.medium` | 80% width |
+| `.small` | 60% width |
+| `.tiny` | 35% width |
+| `.portrait` | 55% width, good for screenshots |
+| `.frame` | Thin border |
+| `.crop` | Fixed height, cropped to fill |
+| `.icon` | Small round picture |
+| `.cover` | Edge to edge, no rounded corners |
+| `.left` / `.right` | Float beside the text |
+
+## Imprint
+
+In `manuscript/imprint.md`, `{{ publisher }}`, `{{ editor }}` and `{{ imprint_note }}` are filled in from `book.yaml`. A line is removed if its value is empty.
+
+## Folders
+
+```
 .
-├── assets/
-│   ├── cover.png
-│   └── logo.png
-├── manuscript/
-│   ├── book.md
-│   ├── imprint.md
-│   └── images/
-├── styles/
-│   └── ebook.css
-├── output/
+├── assets/        cover and logo
+├── images/        pictures used in the book
+├── manuscript/    book.md and imprint.md
+├── styles/        ebook.css
+├── output/        the finished EPUB
 ├── book.yaml
 ├── build.py
 └── requirements.txt
+```
 
-Path	Purpose
-assets/	Book cover and optional logo
-manuscript/	Manuscript, imprint, and images
-styles/	EPUB stylesheet
-output/	Generated EPUB files
-book.yaml	Book metadata
-build.py	EPUB build script
-requirements.txt	Python dependencies
+## Notes
 
-⸻
+- Readers show some styles differently. Check your EPUB in Apple Books, Calibre or Kindle Previewer.
+- Only publish texts you have the right to share. Public-domain rules are different in each country.
 
-Notes
+## License
 
-* Test your EPUB: Use Apple Books, Calibre, or Kindle Previewer.
-* Reader compatibility: EPUB readers may render some CSS features differently.
-* Copyright: Only distribute content you have the right to publish. Public-domain rules vary by country.
-
-License
-
-Add a license of your choice before distributing this template.
+Add a license before you share this.
