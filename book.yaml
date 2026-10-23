@@ -1,0 +1,17 @@
+# ---------------------------------------------------------
+# Book metadata. Edit these values for your own book.
+# Required: title, author, language, identifier
+# ---------------------------------------------------------
+title: "Sample Book Title"
+subtitle: "A short subtitle goes here"
+author: "Author Name"
+translator: ""            # optional, leave empty to hide
+language: "en"            # e.g. en, ms, id, ar, fr
+identifier: "sample-book-title-author-name"   # unique ID, no spaces
+
+# Used in manuscript/imprint.md as {{ publisher }}, {{ editor }}, {{ imprint_note }}
+# Any empty value hides the whole line that uses it.
+publisher: "Your Name or Project"
+editor: "Editor Name"
+imprint_note: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+description: "A one-sentence description shown in some e-readers."

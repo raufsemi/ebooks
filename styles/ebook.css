@@ -1,0 +1,547 @@
+/* =====================================================
+   MODERN EPUB STYLESHEET
+   Airy, left-aligned, editorial feel.
+   - No fixed colors: respects light / dark / sepia themes
+   - No CSS variables, flex or grid: works on old e-readers
+   - Same class names as your HTML, so no markup changes
+   ===================================================== */
+
+/* ---------- Base ---------- */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  font-size: 1em;
+  line-height: 1.75;
+  text-align: left; /* ragged right = calmer, more modern */
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  widows: 3;
+  orphans: 3;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.book-section {
+  margin: 0;
+  padding: 0;
+}
+
+/* ---------- Paragraphs: block style, no indent ---------- */
+p {
+  margin: 0 0 1.15em;
+  padding: 0;
+  text-indent: 0;
+}
+
+/* ---------- Chapter title ---------- */
+.book-section > h1 {
+  margin: 3.5em 0 1.6em;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 2.1em;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+/* Short accent bar above each chapter title */
+.book-section > h1::before {
+  content: "";
+  display: block;
+  width: 2.2em;
+  height: 0.16em;
+  margin-bottom: 0.65em;
+  background-color: currentColor;
+  opacity: 0.85;
+}
+
+/* Drop cap on the first paragraph (ignored gracefully if unsupported) */
+.book-section > h1 + p::first-letter {
+  float: left;
+  margin: 0.06em 0.12em 0 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 3.4em;
+  font-weight: 800;
+  line-height: 0.8;
+}
+
+/* ---------- Sub-headings ---------- */
+.subsection {
+  margin: 2.2em 0 0;
+}
+
+.subsection h2,
+.subsection h3,
+.subsection h4,
+.subsection h5,
+.subsection h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  text-align: left;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+  page-break-after: avoid;
+  break-after: avoid;
+}
+
+.subsection h2 {
+  margin: 2.4em 0 0.7em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid;
+  font-size: 1.45em;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+.subsection h3 {
+  margin: 2em 0 0.55em;
+  font-size: 1.2em;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* h4 becomes a small uppercase "label" */
+.subsection h4 {
+  margin: 1.8em 0 0.5em;
+  font-size: 0.8em;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.subsection h5,
+.subsection h6 {
+  margin: 1.5em 0 0.4em;
+  font-size: 0.95em;
+  font-weight: 600;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* ---------- Lists ---------- */
+ul,
+ol {
+  margin: 0.9em 0 1.3em;
+  padding-left: 1.4em;
+}
+
+ul {
+  list-style-type: square;
+}
+
+li {
+  margin: 0 0 0.55em;
+  padding-left: 0.3em;
+}
+
+li > p {
+  margin: 0 0 0.5em;
+}
+
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  margin: 0.5em 0 0.2em;
+}
+
+/* ---------- Block quote (callout style) ---------- */
+blockquote {
+  margin: 2em 0;
+  padding: 1em 1.1em 0.4em 1.2em;
+  border-left: 0.28em solid;
+  background-color: rgba(128, 128, 128, 0.1); /* works in any theme */
+  font-style: normal;
+  font-size: 1.02em;
+  line-height: 1.65;
+  text-align: left;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+blockquote p:last-child {
+  margin-bottom: 0.7em;
+}
+
+blockquote cite,
+blockquote footer {
+  display: block;
+  margin-top: 0.4em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  font-style: normal;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+/* ---------- Inline ---------- */
+strong,
+b {
+  font-weight: 700;
+}
+
+em,
+i {
+  font-style: italic;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted;
+}
+
+mark {
+  background-color: rgba(255, 204, 0, 0.35);
+  color: inherit;
+  padding: 0 0.15em;
+}
+
+small {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+sup,
+sub {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+/* ---------- Divider: three dots ---------- */
+hr {
+  width: 4em;
+  height: 0;
+  margin: 2.8em auto;
+  border: 0;
+  border-top: 0.3em dotted;
+  opacity: 0.5;
+}
+
+/* ---------- Images & figures ---------- */
+/* Every image: centered block, never overflows, same rounded corners */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 0.6em;
+}
+
+/* Markdown ![caption](pic.jpg) alone on a line becomes <figure> */
+figure {
+  margin: 2.4em 0;
+  padding: 0;
+  text-align: center;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+figure img {
+  width: 100%; /* default: full text width, consistent */
+}
+
+figcaption {
+  margin: 0.9em 0.5em 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.75em;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-align: center;
+  opacity: 0.65;
+}
+
+/* Image inside a normal paragraph (inline use) */
+p > img {
+  margin: 1.4em auto;
+}
+
+/* ---------- Image variants ----------
+   Markdown (pandoc):  ![Caption](img/pic.jpg){.small}
+   -------------------------------------------------- */
+
+/* Soft framed look: use for screenshots or light photos */
+img.frame {
+  padding: 0.4em;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 0.8em;
+}
+
+/* Width presets, always centered */
+figure img.large,
+img.large {
+  width: 100%;
+}
+figure img.medium,
+img.medium {
+  width: 80%;
+}
+figure img.small,
+img.small {
+  width: 60%;
+}
+figure img.tiny,
+img.tiny {
+  width: 35%;
+}
+
+/* Tall / phone-screenshot images: narrower so they don't eat a page */
+figure img.portrait,
+img.portrait {
+  width: 55%;
+}
+
+/* Uniform crop (needs object-fit: Apple Books, Kobo, modern readers).
+   Readers without support just show the full image. */
+figure img.crop,
+img.crop {
+  width: 100%;
+  height: 14em;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Small round icon / avatar */
+img.icon {
+  width: 4em;
+  height: 4em;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Full-page image (cover, chapter openers) */
+img.cover,
+.cover img {
+  width: 100%;
+  height: auto;
+  border-radius: 0;
+}
+
+/* Float beside text (use sparingly; some Kindles ignore floats) */
+img.left {
+  float: left;
+  width: 40%;
+  margin: 0.3em 1.2em 0.8em 0;
+}
+
+img.right {
+  float: right;
+  width: 40%;
+  margin: 0.3em 0 0.8em 1.2em;
+}
+
+/* Never let a float leak into the next heading */
+h1,
+h2,
+h3,
+h4 {
+  clear: both;
+}
+
+/* ---------- Code ---------- */
+pre {
+  margin: 1.6em 0;
+  padding: 1em 1.1em;
+  border-radius: 0.5em;
+  background-color: rgba(128, 128, 128, 0.14);
+  font-size: 0.82em;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-align: left;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+
+code {
+  font-family: Menlo, Consolas, "Courier New", monospace;
+  font-size: 0.88em;
+}
+
+p code,
+li code {
+  padding: 0.1em 0.35em;
+  border-radius: 0.3em;
+  background-color: rgba(128, 128, 128, 0.18);
+}
+
+pre code {
+  padding: 0;
+  background: none;
+}
+
+/* ---------- Tables ---------- */
+table {
+  width: 100%;
+  margin: 1.8em 0;
+  border-collapse: collapse;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.85em;
+  line-height: 1.5;
+}
+
+th,
+td {
+  padding: 0.65em 0.7em;
+  border: 0;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  border-bottom: 2px solid;
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+tr:nth-child(even) td {
+  background-color: rgba(128, 128, 128, 0.07);
+}
+
+/* ---------- Footnotes ---------- */
+.footnote,
+.footnotes {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  line-height: 1.6;
+  opacity: 0.85;
+}
+
+.footnotes {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 0.15em solid;
+}
+
+.footnotes p {
+  margin: 0 0 0.6em;
+}
+
+/* ---------- Title page ---------- */
+.title-page {
+  margin: 0;
+  padding: 25% 0 0;
+  text-align: left; /* left-aligned = editorial look */
+  page-break-after: always;
+  break-after: page;
+}
+
+.title-page h1 {
+  margin: 0 0 0.5em;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 2.8em;
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.055em;
+  text-align: left;
+  text-transform: none;
+  -webkit-hyphens: manual;
+  hyphens: manual;
+}
+
+.title-page h1::after {
+  content: "";
+  display: block;
+  width: 3em;
+  height: 0.2em;
+  margin-top: 0.5em;
+  background-color: currentColor;
+}
+
+.title-page .subtitle {
+  margin: 1em 0 4em;
+  max-width: 26em;
+  font-family: Georgia, serif;
+  font-size: 1.1em;
+  font-style: italic;
+  line-height: 1.5;
+  text-align: left;
+  opacity: 0.8;
+}
+
+.title-page .author {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.85em;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  line-height: 1.5;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.title-page .translator {
+  margin: 0.6em 0 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.75em;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-align: left;
+  opacity: 0.65;
+}
+
+/* ---------- Imprint page ---------- */
+.imprint-page {
+  margin: 0;
+  padding-top: 15%;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.8em;
+  line-height: 1.75;
+  text-align: left;
+  opacity: 0.9;
+  page-break-after: always;
+  break-after: page;
+}
+
+.imprint-page h1 {
+  margin: 0 0 1.8em;
+  font-size: 0.95em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  line-height: 1.3;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.imprint-page img {
+  display: block;
+  max-width: 30%;
+  max-height: 4em;
+  margin: 0 0 2em;
+  border-radius: 0;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.imprint-note p {
+  margin: 0 0 0.7em;
+}
+
+/* ---------- Keep headings with the text that follows ---------- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
