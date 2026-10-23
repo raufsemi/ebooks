@@ -1,73 +1,96 @@
 # Sample Book Title
 
 <!--
-QUICK RULES
-  #    = ignored (use it for the book title)
-  ##   = chapter: own page + table-of-contents entry
-  ###  = section inside a chapter
-  Leave a blank line between every block.
-  Never start a line with # inside a code block.
+This first line (one #) is ignored. It is only a label for you.
+Read the tutorial below, then delete everything under this
+comment and write your own book.
 -->
 
-## Basics
+## Start Here
 
-### Headings
+### Welcome
 
-Use `##` for a chapter and `###` for a section. Deeper levels (`####`, `#####`) also work.
+This file is your book. Whatever you type here becomes the pages of your EPUB.
 
-Each chapter becomes its own page. Write your text under the headings.
+This short tutorial shows you how to write it. Each example shows **what you type**, then **what readers see**.
 
-### Text
+### Chapters and sections
+
+Start a line with `##` and a space to make a **chapter**. Each chapter starts on a new page and appears in the table of contents.
+
+Start a line with `###` and a space to make a **section** inside a chapter.
 
 ```markdown
-**bold**  *italic*  `code`  [link](https://example.com)
+## My First Chapter
 
-> A quote becomes a soft callout box.
+### A Section
+
+Your text goes here.
+```
+
+Leave an empty line between everything: headings, paragraphs, images, lists.
+
+### Bold, italic and links
+
+```markdown
+This is **bold**, this is *italic*, and this is a [link](https://example.com).
+```
+
+This is **bold**, this is *italic*, and this is a [link](https://example.com).
+
+### Lists
+
+```markdown
+- A bullet
+- Another bullet
+
+1. First step
+2. Second step
+```
+
+- A bullet
+- Another bullet
+
+1. First step
+2. Second step
+
+### Quotes and dividers
+
+```markdown
+> Start a line with > to make a quote.
+
 
 ---
 ```
 
-Result: **bold**, *italic*, `code`, and a [link](https://example.com).
+> Start a line with > to make a quote.
 
-> A quote becomes a soft callout box.
+
+
 
 ---
 
 Three dashes make the dotted divider above.
 
-### Lists
+## Adding Images
+
+### Three steps
+
+1. Copy your picture into the `images` folder (PNG or JPG).
+2. Type a line like the one below. The words in the brackets become the caption.
+3. Rebuild your book.
 
 ```markdown
-- Bullet
-  - Nested bullet
-
-1. First
-2. Second
+![Caption goes here](images/sample-photo.png)
 ```
 
-- Bullet
-  - Nested bullet
+![Caption goes here](images/sample-photo.png)
 
-1. First
-2. Second
+Always put the image on its own line, with an empty line above and below. Want no caption? Leave the brackets empty: `![](images/sample-photo.png)`.
 
-## Images
+### Change the size or style
 
-### Add an image
-
-Put your files in `images/`, then write:
-
-```markdown
-![Caption goes here](images/image.png)
-```
-
-The image must be on its own line, with a blank line above and below. The text in the brackets is the caption. Leave it empty (`![](...)`) for no caption.
-
-![Caption goes here](images/image.png)
-
-### Size and style
-
-Add classes in curly braces right after the image:
+Add a word in curly braces right after the image:
 
 ```markdown
 ![Weekly chart](images/sample-chart.png){.medium .frame}
@@ -75,59 +98,62 @@ Add classes in curly braces right after the image:
 
 ![Weekly chart](images/sample-chart.png){.medium .frame}
 
-![Phone screenshot](images/sample-screen.png){.portrait}
+You can combine words, like `.medium` and `.frame` above. Here are all of them:
 
-![Cropped to a fixed height](images/sample-landscape.png){.crop}
-
-| Class | Effect |
+| Word | What it does |
 |---|---|
 | `.large` | Full width (default) |
 | `.medium` | 80% width |
 | `.small` | 60% width |
 | `.tiny` | 35% width |
-| `.portrait` | 55% width, for screenshots |
-| `.frame` | Thin border |
+| `.portrait` | Narrower, good for phone screenshots |
+| `.frame` | Adds a thin border |
 | `.crop` | Fixed height, cropped to fill |
-| `.icon` | Small round avatar |
-| `.cover` | Edge to edge, no rounding |
-| `.left` / `.right` | Float beside text |
+| `.icon` | Small round picture |
+| `.cover` | Edge to edge, no rounded corners |
 
-Tip: use the same aspect ratio (such as 16:9) for all photos so they look consistent.
+![A phone screenshot with .portrait](images/sample-screen.png){.portrait}
 
-## Extras
+![A cropped photo with .crop](images/sample-landscape.png){.crop}
+
+Tip: use pictures with the same shape (for example all 16:9) so your book looks consistent.
+
+## More Tools
 
 ### Tables
 
 ```markdown
-| Item  | Qty |
-|-------|-----|
-| Apple | 3   |
+| Food  | Calories |
+|-------|----------|
+| Apple | 95       |
+| Rice  | 200      |
 ```
 
-| Item  | Qty |
-|-------|-----|
-| Apple | 3   |
-
-### Code
-
-````markdown
-```python
-print("Hello")
-```
-````
-
-```python
-print("Hello")
-```
+| Food  | Calories |
+|-------|----------|
+| Apple | 95       |
+| Rice  | 200      |
 
 ### Footnotes
 
-Add a marker in the text[^1] and define it in the same section, not in another one.
+A footnote has two parts: a **marker** in your sentence, and the **note** itself. Readers tap the marker to see the note, and tap the arrow to go back.
 
 ```markdown
-Add a marker in the text[^1].
+Put a marker in your sentence[^1].
 
-[^1]: The note text.
+[^1]: This is the note.
 ```
 
-[^1]: This is the footnote.
+Put a marker in your sentence[^1]. You can add more[^2], and the numbers are added for you.
+
+[^1]: This is the note. Tap the arrow to go back to the text.
+[^2]: A second note. Write notes anywhere in the same chapter, usually at the end.
+
+## Common Mistakes
+
+### If something looks wrong
+
+- **Heading not working?** You forgot the space: write `## Title`, not `##Title`.
+- **Image missing?** Check the file name and that it is inside the `images` folder.
+- **No caption or size?** Put empty lines above and below the image, and keep the image alone on its line.
+- **Footnote showing as `[^1]`?** The note line `[^1]: ...` is missing, or it is in a different chapter (`##`). Marker and note must be in the same chapter.

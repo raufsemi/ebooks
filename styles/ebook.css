@@ -385,54 +385,143 @@ pre code {
   background: none;
 }
 
-/* ---------- Tables ---------- */
+/* ---------- Tables: soft card with rounded corners ---------- */
 table {
   width: 100%;
   margin: 1.8em 0;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(128, 128, 128, 0.35);
+  border-radius: 0.7em;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.85em;
+  font-size: 0.82em;
   line-height: 1.5;
+  text-align: left;
+  page-break-inside: avoid;
+  break-inside: avoid;
 }
 
 th,
 td {
-  padding: 0.65em 0.7em;
+  padding: 0.75em 0.9em;
   border: 0;
-  border-bottom: 1px solid rgba(128, 128, 128, 0.35);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.22);
   text-align: left;
   vertical-align: top;
+  -webkit-hyphens: manual;
+  hyphens: manual;
 }
 
+/* Header row: tinted band, normal case, bold */
 th {
-  border-bottom: 2px solid;
-  font-size: 0.9em;
+  background-color: rgba(128, 128, 128, 0.16);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.4);
+  font-size: 0.95em;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
-tr:nth-child(even) td {
-  background-color: rgba(128, 128, 128, 0.07);
+/* First column reads as the row label */
+td:first-child {
+  font-weight: 600;
+}
+
+/* No line under the last row (the card border does that) */
+tr:last-child td {
+  border-bottom: 0;
+}
+
+/* Rounded corners (works with border-collapse: separate) */
+tr:first-child th:first-child {
+  border-top-left-radius: 0.6em;
+}
+
+tr:first-child th:last-child {
+  border-top-right-radius: 0.6em;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: 0.6em;
+}
+
+tr:last-child td:last-child {
+  border-bottom-right-radius: 0.6em;
+}
+
+/* Inline code inside tables: small tinted chip */
+td code,
+th code {
+  padding: 0.1em 0.4em;
+  border-radius: 0.3em;
+  background-color: rgba(128, 128, 128, 0.2);
+  font-size: 0.9em;
+  font-weight: 400;
 }
 
 /* ---------- Footnotes ---------- */
-.footnote,
-.footnotes {
+
+/* The number in the text: a bigger, easy-to-tap pill */
+sup {
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+a.footnote-ref {
+  display: inline-block;
+  min-width: 1.4em;
+  padding: 0.15em 0.3em;
+  border: 0;
+  border-radius: 0.5em;
+  background-color: rgba(128, 128, 128, 0.2);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 0.8em;
-  line-height: 1.6;
-  opacity: 0.85;
+  font-size: 1.05em;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
 }
 
-.footnotes {
+/* The notes at the end of the chapter */
+div.footnote {
   margin-top: 3em;
-  padding-top: 1em;
-  border-top: 0.15em solid;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.82em;
+  line-height: 1.6;
 }
 
-.footnotes p {
-  margin: 0 0 0.6em;
+div.footnote hr {
+  width: 100%;
+  margin: 0 0 1.2em;
+  border: 0;
+  border-top: 1px solid rgba(128, 128, 128, 0.4);
+  opacity: 1;
+}
+
+div.footnote ol {
+  margin: 0;
+  padding-left: 1.6em;
+}
+
+div.footnote li {
+  margin: 0 0 0.8em;
+  padding-left: 0.3em;
+}
+
+div.footnote p {
+  margin: 0;
+}
+
+/* Arrow that returns to the text: easy to tap */
+a.footnote-backref {
+  display: inline-block;
+  margin-left: 0.4em;
+  padding: 0.1em 0.5em;
+  border: 0;
+  border-radius: 0.5em;
+  background-color: rgba(128, 128, 128, 0.2);
+  font-weight: 700;
+  text-decoration: none;
 }
 
 /* ---------- Title page ---------- */

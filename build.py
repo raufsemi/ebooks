@@ -39,6 +39,10 @@ Edited by {{ editor }}
 {{ imprint_note }}
 """
 
+# Tap a footnote number to read the note in a popup (Apple Books, Kobo,
+# Kindle). Set to False if your EPUB checker complains about epub:type.
+POPUP_FOOTNOTES = True
+
 # Remembers which images were already added: {source path: path in EPUB}
 IMAGE_REGISTRY = {}
 
@@ -265,6 +269,42 @@ def fill_placeholders(text, meta):
 # MANUSCRIPT PARSING
 # =====================================================================
 
+def fenced_ranges(source):
+    """
+    Find the character ranges of fenced code blocks (``` or ~~~),
+    so lines starting with # inside them are not read as headings.
+    """
+
+    ranges = []
+    fence = None
+    start = 0
+    position = 0
+
+    for line in source.splitlines(keepends=True):
+        stripped = line.strip()
+
+        if fence is None:
+            opening = re.match(r"^(`{3,}|~{3,})", stripped)
+
+            if opening:
+                fence = opening.group(1)
+                start = position
+        elif (
+            stripped
+            and set(stripped) == {fence[0]}
+            and len(stripped) >= len(fence)
+        ):
+            ranges.append((start, position + len(line)))
+            fence = None
+
+        position += len(line)
+
+    if fence is not None:
+        ranges.append((start, len(source)))
+
+    return ranges
+
+
 def parse_manuscript(source):
     """
     Parse Markdown into major sections and nested subsections.
@@ -278,7 +318,13 @@ def parse_manuscript(source):
         r"(?m)^(#{1,6})[ \t]+(.+?)[ \t]*#*[ \t]*$"
     )
 
-    matches = list(pattern.finditer(source))
+    code_blocks = fenced_ranges(source)
+
+    matches = [
+        match
+        for match in pattern.finditer(source)
+        if not any(a <= match.start() < b for a, b in code_blocks)
+    ]
     sections = []
     preamble = source[:matches[0].start()].strip() if matches else source.strip()
 
@@ -354,6 +400,80 @@ def render_markdown(content):
     )
 
 
+def tidy_footnotes(html):
+    """
+    Make footnote links reader-friendly:
+    - ids without colons (fn:1 -> fn-1), which some readers dislike
+    - an up-arrow back link (the default arrow turns into an emoji on iOS)
+    - epub:type attributes, so readers can show the note as a popup
+    """
+
+    html = re.sub(r'(id="|href="#)(fnref|fn):', r"\1\2-", html)
+    html = html.replace("&#8617;", "&#8593;")
+
+    if POPUP_FOOTNOTES:
+        html = html.replace(
+            '<a class="footnote-ref"',
+            '<a epub:type="noteref" class="footnote-ref"',
+        )
+        html = re.sub(
+            r'<li id="(fn-[^"]+)"',
+            r'<li id="\1" epub:type="footnote"',
+            html,
+        )
+
+    return html
+
+
+def render_chapter(node):
+    """
+    Render a whole chapter in one pass, so footnotes can be written
+    anywhere in the chapter. Subsections are marked with temporary
+    comments, then turned into <section> blocks.
+    """
+
+    titles = []
+    parts = [node["content"]]
+
+    def add_children(children):
+        for child in children:
+            titles.append(child["title"])
+            level = min(child["level"], 6)
+
+            parts.append(f"\n\n<!--OPEN:{level}:{len(titles) - 1}-->\n\n")
+            parts.append(child["content"])
+            add_children(child["children"])
+            parts.append("\n\n<!--CLOSE-->\n\n")
+
+    add_children(node["children"])
+
+    html = render_markdown("".join(parts))
+
+    html = re.sub(
+        r"<!--OPEN:(\d):(\d+)-->",
+        lambda m: (
+            f'<section class="subsection">'
+            f'<h{m.group(1)}>{escape(titles[int(m.group(2))])}</h{m.group(1)}>'
+        ),
+        html,
+    )
+    html = html.replace("<!--CLOSE-->", "</section>")
+    html = tidy_footnotes(html)
+
+    # Warn about footnote markers that have no note.
+    visible = re.sub(r"<(pre|code)\b.*?</\1>", "", html, flags=re.S)
+    leftover = re.findall(r"\[\^[^\]]+\]", visible)
+
+    if leftover:
+        where = node["title"] or "the opening text"
+        print(
+            f"WARNING: footnote without a note in '{where}': "
+            f"{', '.join(sorted(set(leftover)))}"
+        )
+
+    return html
+
+
 def create_section_node(book, style, node, index, language):
     """
     Create an EPUB document for a major section.
@@ -362,24 +482,7 @@ def create_section_node(book, style, node, index, language):
 
     filename = f"sections/section-{index:03}.xhtml"
 
-    body = render_markdown(node["content"])
-
-    def render_children(children):
-        rendered = []
-
-        for child in children:
-            heading_level = min(child["level"], 6)
-            child_content = render_markdown(child["content"])
-
-            rendered.append(
-                f'<section class="subsection">'
-                f'<h{heading_level}>{escape(child["title"])}</h{heading_level}>'
-                f'{child_content}'
-                f'{render_children(child["children"])}'
-                f'</section>'
-            )
-
-        return "\n".join(rendered)
+    body = render_chapter(node)
 
     title = node["title"] or "Untitled Section"
 
@@ -399,7 +502,6 @@ def create_section_node(book, style, node, index, language):
         f'<section class="book-section">'
         f'{heading}'
         f'{body}'
-        f'{render_children(node["children"])}'
         f'</section>'
     )
 
@@ -409,7 +511,12 @@ def create_section_node(book, style, node, index, language):
 
     page.content = html
 
-    page.add_item(style)
+    # Pages live in sections/, so the stylesheet is one folder up.
+    page.add_link(
+        href="../styles/ebook.css",
+        rel="stylesheet",
+        type="text/css",
+    )
     book.add_item(page)
 
     return page
