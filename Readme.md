@@ -97,6 +97,3 @@ In `manuscript/imprint.md`, `{{ publisher }}`, `{{ editor }}` and `{{ imprint_no
 - Readers show some styles differently. Check your EPUB in Apple Books, Calibre or Kindle Previewer.
 - Only publish texts you have the right to share. Public-domain rules are different in each country.
 
-## License
-
-Add a license before you share this.
